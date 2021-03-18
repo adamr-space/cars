@@ -1,0 +1,148 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.car {
+  border: 1px solid black;
+  border-radius: 15px;
+  margin: 0.2vh;
+  padding: 1vh;
+  width: 35vw;
+  background-color: aliceblue;
+}
+
+.year,
+.colour,
+.price,
+.mileage {
+  display: inline;
+  padding: 0 1.5vw;
+  border-top: black solid 1px;
+  left: 1vw;
+  position: relative;
+}
+
+.make {
+  font-size: 2vw;
+  font-weight: bold;
+}
+
+.model {
+  font-size: 1vw;
+  font-weight: 600;
+  font-style: italic;
+}
+
+div#banner {
+  background-color: #3e6866;
+}
+
+#banner > img {
+  width: 35vw;
+  margin: 0 auto;
+  display: block;
+}
+
+body {
+  background-image: linear-gradient(#3e6866, #555757);
+  overflow: hidden;
+}
+
+table#cars {
+  border: 3px solid black;
+  box-shadow: 0 0 12px 2px black;
+}
+
+div#cars_wrapper {
+  background-color: #f0f8ffd4;
+  padding: 1vw;
+  border-radius: 15px;
+  box-shadow: 0 0 6px 5px black;
+}
+
+.dataTables_wrapper {
+  margin: 0 auto;
+  width: 70%;
+}
+
+div#customFilter {
+  width: 70vw;
+  border: 1px solid black;
+  background-color: aliceblue;
+  border-radius: 15px;
+  padding: 0.5vw;
+  margin: 1vh auto;
+  box-shadow: 0 0 8px 3px black;
+}
+
+#customFilter > * {
+  display: inline-block;
+  text-align: center;
+}
+
+div#colours {
+  position: relative;
+  left: 15vw;
+}
+
+input.form-control.form-control-sm {
+  margin-bottom: 1vh;
+}
+
+#customFilter > button {
+  margin-left: 0.5vw;
+  padding: 0.1vw;
+  border-radius: 10px;
+}
+
+span.clrSample {
+  text-shadow: 0 0 10px black;
+  /* margin-left: 0.5vw; */
+}
+
+.clrsFlt > label {
+  margin: 0.3vw;
+}
+
+div#tableWrapper {
+  height: 100vh;
+  position: relative;
+  display: block;
+}
+
+tr[role] {
+  background-color: aliceblue;
+}
+
+tr {
+  background-color: #ebebebad;
+}
+
+input[type="number"] {
+  max-width: 3.7vw;
+  text-align: center;
+}
+
+input.form-control.form-control-sm {
+  width: 6vw;
+}
+
+select#make {
+  width: 15vw;
+  height: 2.5vh;
+}
+
+div#toolbar2 {
+  white-space: nowrap;
+}
+
+div#toolbar3 {
+  position: relative;
+  left: 1vw;
+}
+
+
+label {
+    margin: 0 0.2vw;
+}
