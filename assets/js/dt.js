@@ -1,156 +1,169 @@
-const Inputs = ({ priceToolbar, yearToolbar, mileageToolbar }) => ({
-  priceToolbar,
-  yearToolbar,
-  mileageToolbar,
-  init() {
-    // const calls = []
-    // for (const key in {
-    //   price: { txt: "Price", step: 500, lbl: "£:",col:5 },
-    //   price: { txt: "Year", step: 1, lbl: "Yr:",col:2 },
-    //   price: { txt: "Mileage", step: 500, lbl: "mi:",col:4 },
-    // }) {
-    //   const element = object[key];
-    //   const callBack = async () => {
-    //     await this.genInputs(element.txt, element.step, element.lbl);
-    //     this[element.txt.toLowerCase()] = await this.generateProperties(element.txt);
-    //     this[element.txt.toLowerCase()].maxVal = Math.max.apply(Math, dt.dt.column(element.col).data());
-    //     this[element.txt.toLowerCase()].minVal = Math.min.apply(Math, dt.dt.column(element.col).data());
-    //   };
-    //   calls.push(callBack)
-    // }
-    const genPriceInputs = async () => {
-      await this.genInputs("Price", 500, "£:");
-      this.price = await this.generateProperties("Price");
-      this.price.maxVal = Math.max.apply(Math, dt.dt.column(5).data());
-      this.price.minVal = Math.min.apply(Math, dt.dt.column(5).data());
-    };
-    const genYearInputs = async () => {
-      await this.genInputs("Year", 1, "Yr:");
-      this.year = await this.generateProperties("Year");
-      this.year.maxVal = Math.max.apply(Math, dt.dt.column(2).data());
-      this.year.minVal = Math.min.apply(Math, dt.dt.column(2).data());
-    };
-    const genMilageInputs = async () => {
-      await this.genInputs("Mileage", 1, "mi:");
-      this.mileage = await this.generateProperties("Mileage");
-      this.mileage.maxVal = Math.max.apply(Math, dt.dt.column(4).data());
-      this.mileage.minVal = Math.min.apply(Math, dt.dt.column(4).data());
-    };
-    // calls.forEach(call)=>
-    genYearInputs();
-    genPriceInputs();
-    genMilageInputs();
+const Inputs = ({ priceInputs, yearInputs, mileageInputs }) => ({
+  priceInputs,
+  yearInputs,
+  mileageInputs,
+  async init(table) {
+    await this.makeInputs_Labels("Price", 500, "£:");
+    await this.makeInputs_Labels("Year", 1, "Yr:");
+    await this.makeInputs_Labels("Mileage", 1, "mi:");
+    this.price = await this.makePropGetSet("Price");
+    this.year = await this.makePropGetSet("Year");
+    this.mileage = await this.makePropGetSet("Mileage");
+    this.setDefaults(table);
   },
-  async generateProperties(type) {
-    const min = document.getElementById(`input${type}Min`);
-    const max = document.getElementById(`input${type}Max`);
-    return {
-      set minMin(val) {
-        min.min = val;
-      },
-      set minVal(val) {
-        min.value = val;
-      },
-      set minMax(val) {
-        min.max = val;
-      },
-      set maxMin(val) {
-        max.min = val;
-      },
-      set maxVal(val) {
-        max.value = val;
-      },
-      set maxMax(val) {
-        max.max = val;
-      },
-      get minMin() {
-        return min.min;
-      },
-      get minVal() {
-        return min.value;
-      },
-      get minMax() {
-        return min.max;
-      },
-      get maxMin() {
-        return max.min;
-      },
-      get maxVal() {
-        return max.value;
-      },
-      get maxMax() {
-        return max.max;
-      },
-    };
+  async makePropGetSet(type) {
+    return new Promise((resolve) => {
+      const min = document.getElementById(`input${type}Min`);
+      const max = document.getElementById(`input${type}Max`);
+      resolve({
+        set minMin(val) {
+          min.min = val;
+        },
+        set minVal(val) {
+          min.value = val;
+        },
+        set minMax(val) {
+          min.max = val;
+        },
+        set maxMin(val) {
+          max.min = val;
+        },
+        set maxVal(val) {
+          max.value = val;
+        },
+        set maxMax(val) {
+          max.max = val;
+        },
+        get minMin() {
+          return min.min;
+        },
+        get minVal() {
+          return min.value;
+        },
+        get minMax() {
+          return min.max;
+        },
+        get maxMin() {
+          return max.min;
+        },
+        get maxVal() {
+          return max.value;
+        },
+        get maxMax() {
+          return max.max;
+        },
+      });
+    });
   },
-  async genInputs(type, step, txt) {
-    [`input${type}Min`, `input${type}Max`].forEach((id) => {
-      const lbl = this.makeLbl(
+  async makeInputs_Labels(type, step, suffix) {
+    for (const id of [`input${type}Min`, `input${type}Max`]) {
+      const label = await this.makeLabel(
         "label",
         { htmlFor: id },
-        id.includes("Max") ? `Max ${txt}` : `Min ${txt}`
+        id.includes("Max") ? `Max ${suffix}` : `Min ${suffix}`
       );
-      const inp = this.makeInp("input", {
+
+      const input = await this.makeInput("input", {
         type: "number",
         id: id,
         name: id,
-        min: 1000,
-        max: 100000,
         step: step,
-        value: 10000,
       });
-      document
-        .getElementById(this[type.toLowerCase() + "Toolbar"])
-        .append(lbl, inp);
-    });
-  },
-  makeLbl(tag, attrs, txt) {
-    const lbl = document.createElement(tag);
-    lbl.innerHTML = txt;
-    for (const key in attrs) {
-      lbl[key] = attrs[key];
-    }
-    return lbl;
-  },
-  makeInp(tag, attrs) {
-    const inp = document.createElement(tag);
-    for (const key in attrs) {
-      inp[key] = attrs[key];
-    }
-    return inp;
-  },
-});
 
-const inputs = Inputs({
-  priceToolbar: "toolbar1",
-  yearToolbar: "toolbar2",
-  mileageToolbar: "toolbar3",
+      await this.addEvents(input);
+      document
+        .getElementById(this[type.toLowerCase() + "Inputs"])
+        .append(label, input);
+    }
+  },
+  async addEvents(input) {
+    input.reset = (e) => {
+      const input = e.target;
+    };
+    input.onchange = (e) => {
+      e.stopPropagation();
+      const input = e.target;
+      let value = parseInt(input.value);
+      let min = parseInt(input.min);
+      let max = parseInt(input.max);
+      if (value > max || value < min) {
+        input.focus();
+        input.id.toLowerCase().includes("max")
+          ? (input.value = input.max)
+          : (input.value = input.min);
+      } else {
+        // const type = input.id
+        //   .substring(5)
+        //   .replace(/(min|max)/i, "");
+        // console.log(type, input.id.slice(-3).toLowerCase());
+        // filters[`${input.id.slice(-3).toLowerCase()}${type}`] = value;
+        garage.filter();
+      }
+    };
+  },
+  async makeLabel(tag, attributes, suffix) {
+    const label = document.createElement(tag);
+    label.innerHTML = suffix;
+    for (const attribute in attributes) {
+      label[attribute] = attributes[attribute];
+    }
+    return label;
+  },
+  async makeInput(tag, attributes) {
+    const input = document.createElement(tag);
+    for (const attribute in attributes) {
+      input[attribute] = attributes[attribute];
+    }
+    return input;
+  },
+  setDefaults(table) {
+    this.price.maxVal = Math.max.apply(Math, table.column(5).data());
+    this.price.minVal = Math.min.apply(Math, table.column(5).data());
+    this.year.maxVal = Math.max.apply(Math, table.column(2).data());
+    this.year.minVal = Math.min.apply(Math, table.column(2).data());
+    this.mileage.maxVal = Math.max.apply(Math, table.column(4).data());
+    this.mileage.minVal = Math.min.apply(Math, table.column(4).data());
+    this.price.minMin = this.price.minVal;
+    this.price.minMax = this.price.maxVal;
+    this.price.maxMin = this.price.minVal;
+    this.price.maxMax = this.price.maxVal;
+    this.year.minMin = this.year.minVal;
+    this.year.minMax = this.year.maxVal;
+    this.year.maxMin = this.year.minVal;
+    this.year.maxMax = this.year.maxVal;
+    this.mileage.minMin = this.mileage.minVal;
+    this.mileage.minMax = this.mileage.maxVal;
+    this.mileage.maxMin = this.mileage.minVal;
+    this.mileage.maxMax = this.mileage.maxVal;
+  },
 });
 
 const Dt = ({ id }) => ({
   id,
-  dt: {},
+  inputs: Inputs({
+    priceInputs: "toolbar1",
+    yearInputs: "toolbar2",
+    mileageInputs: "toolbar3",
+  }),
+  table: {},
   make() {
-    this.init().then((table) => {
-      this.dt = table;
-      this.makeBar();
+    this.table = this.init().then((table) => {
+      this.table = table;
+      this.inputs.init(this.table);
     });
   },
   async init() {
-    return await $("#" + this.id).DataTable({
+    return $("#" + this.id).DataTable({
       dom:
-        "<'row'<'#toolbar1.col-sm-12 col-md'><'#toolbar2.col-sm-12 col-md'><'#toolbar3.col-sm-12 col-md'><'col-sm-12 col-md'f>>" +
+        "<'row'<'#" +
+        this.inputs.priceInputs +
+        ".col-sm-12 col-md'><'#" +
+        this.inputs.yearInputs +
+        ".col-sm-12 col-md'><'#" +
+        this.inputs.mileageInputs +
+        ".col-sm-12 col-md'><'col-sm-12 col-md'f>>" +
         "<'row'<'col-sm-12'tr>>" +
         "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      // dom: '<lf>rtip',
-      // buttons: [
-      //   {
-      //     text: "My button",
-      //     action: function (e, dt, node, config) {
-      //       alert("Button activated");
-      //     },
-      //   },
-      // ],
       data: garage.cars,
       columns: [
         { data: "make", title: "Make" },
@@ -180,9 +193,5 @@ const Dt = ({ id }) => ({
         },
       ],
     });
-  },
-  makeBar() {
-    inputs.init();
-    // maxAge.value = maxYr.value - minYr.value;
   },
 });
