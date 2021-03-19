@@ -1,79 +1,57 @@
 "use strict";
 $(document).ready(function () {});
 
-const fltCars = () => {
-  const {price,mileage,year} = dt.inputs
+const filterCars = () => {
+  const { price, mileage, year, colours } = garage.table.inputs;
   const toRender = garage.cars.filter((car) => {
-    let includeCar = true;
-    // console.log(dt.inputs.price.minVal, car.price)
-    if (includeCar) {
-      includeCar =
-        price.minVal <= car.price && price.maxVal >= car.price;
+    let includeFlag = true;
+    if (includeFlag) {
+      includeFlag = price.minVal <= car.price && price.maxVal >= car.price;
     }
-    if (includeCar) {
-      includeCar = year.minVal <= car.year && year.maxVal >= car.year;
+    if (includeFlag) {
+      includeFlag = year.minVal <= car.year && year.maxVal >= car.year;
     }
-    if (includeCar) {
-      includeCar =
-        mileage.minVal <= car.mileage &&
-        mileage.maxVal >= car.mileage;
+    if (includeFlag) {
+      includeFlag =
+        mileage.minVal <= car.mileage && mileage.maxVal >= car.mileage;
     }
-    if (includeCar && !filters.isColoursDefault()) {
-      includeCar = filters.hasColour(car.colour);
+    if (includeFlag && !colours.isColoursDefault()) {
+      includeFlag = colours.hasColour(car.colour);
     }
-    return includeCar;
+    return includeFlag;
   });
   garage.render(toRender);
-  clrFlt.disable([...new Set(toRender.map((car) => car.colour))]);
+  garage.table.inputs.colours.disable([
+    ...new Set(toRender.map((car) => car.colour)),
+  ]);
 };
 
 const outCars = (cars) => {
-  console.log(cars)
   if (!cars) cars = garage.cars;
-  dt.table.clear()
-      .rows.add(cars)
-      .draw()
-};
-
-const outClrs = () => {
-  colours.innerHTML = "";
-  colours.append(clrFlt.clrFltrs);
-  return clrFlt;
+  garage.table.render(cars);
 };
 
 const creEL = (tag) => document.createElement(tag);
 
-const rstFlt = () => {
-  clrsFlt.reset();
-  filters.reset();
+const resetFilters = () => {
+  garage.table.inputs.colours.reset();
+  // filters.reset();
 };
 
-const init = () => {
+const init = async () => {
   //this is called first once to initialize run time state
-
-  colours = document.getElementById("colours");
   cars = carFactory(5000); //assign n random cars to global cars variable
   garage = {}; //assign empty object global garage variable
   garage.cars = [...cars]; //assign new array from global cars to garage property
   garage.render = outCars; //assign outCars function to property
-  garage.reset = rstFlt; //assign rstFlt function to property
-  garage.filter = fltCars; //assign fltCars function to property
-  garage.total = cars.length;
-  filters = new Filters(garage.cars);
-  clrFlt = new ColoursFilter();
-  clrsFlt = outClrs();
+  garage.filter = filterCars; //assign filterCars function to property
+  garage.table = Dt("cars");
+  await garage.table.make();
+  garage.reset = resetFilters; //assign resetFilters function to property
   garage.reset(); //call reset
-  dt = Dt({id:"cars"})
-  dt.make()
 };
 
 //main entry point
 //GLOBAL SCOPE VARIABLES
-let cars,
-  garage,
-  colours,
-  clrsFlt,
-  clrFlt,
-  filters,
-  dt;
+let cars, garage;
 init();

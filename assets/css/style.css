@@ -3,37 +3,6 @@
   padding: 0;
 }
 
-.car {
-  border: 1px solid black;
-  border-radius: 15px;
-  margin: 0.2vh;
-  padding: 1vh;
-  width: 35vw;
-  background-color: aliceblue;
-}
-
-.year,
-.colour,
-.price,
-.mileage {
-  display: inline;
-  padding: 0 1.5vw;
-  border-top: black solid 1px;
-  left: 1vw;
-  position: relative;
-}
-
-.make {
-  font-size: 2vw;
-  font-weight: bold;
-}
-
-.model {
-  font-size: 1vw;
-  font-weight: 600;
-  font-style: italic;
-}
-
 div#banner {
   background-color: #3e6866;
 }
@@ -90,21 +59,6 @@ input.form-control.form-control-sm {
   margin-bottom: 1vh;
 }
 
-#customFilter > button {
-  margin-left: 0.5vw;
-  padding: 0.1vw;
-  border-radius: 10px;
-}
-
-span.clrSample {
-  text-shadow: 0 0 10px black;
-  /* margin-left: 0.5vw; */
-}
-
-.clrsFlt > label {
-  margin: 0.3vw;
-}
-
 div#tableWrapper {
   height: 100vh;
   position: relative;
@@ -145,4 +99,12 @@ div#toolbar3 {
 
 label {
     margin: 0 0.2vw;
+}
+
+.col-sm.clrTxt {
+    max-width: 3vw;
+}
+
+.col-sm.clrSample {
+    text-shadow: 0 0 5px black;
 }
