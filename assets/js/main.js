@@ -17,7 +17,7 @@ const resetFilters = () => {
 
 const init = async () => {
   //this is called first once to initialize run time state
-  cars = carFactory(5000); //assign n random cars to global cars variable
+  cars = carFactory(15000); //assign n random cars to global cars variable
   garage = {}; //assign empty object global garage variable
   garage.cars = [...cars]; //assign new array from global cars to garage property
   garage.render = outCars; //assign outCars function to property

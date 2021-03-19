@@ -61,7 +61,6 @@ const Colours = (table) => {
     removeColour(colour) {
       colour = parseInt(colour);
       const index = this.list.indexOf(colour);
-      console.log(index);
       if (index > -1) {
         this.list.splice(index, 1);
       }
