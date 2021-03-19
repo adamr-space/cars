@@ -21,6 +21,8 @@ const Dt = (id) => ({
         search: "Search cars:",
         zeroRecords: "No matching cars found",
       },
+      responsive: true,
+      "deferRender": true,
       dom:
         "<'row'<'#" +
         this.inputs.priceInputs +
