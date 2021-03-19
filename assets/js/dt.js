@@ -30,7 +30,7 @@ const Dt = (id) => ({
         this.inputs.mileageInputs +
         ".col-sm col-md'><'#search.col-sm col-md'f>>" +
         "<'row'<'col-sm'tr>>" +
-        "<'row'<'col-sm col-md-5'i><'col-sm col-md-7'p>>",
+        "<'row'<'col-sm col-md-5'i><'#reset.col-sm col-md-2'><'col-sm col-md-5'p>>",
       data: garage.cars,
       columns: [
         { data: "make", name: "make", title: "Make" },

@@ -13,7 +13,9 @@ const Inputs = ({ priceInputs, yearInputs, mileageInputs }) => ({
     this.colours = Colours(table);
     await this.setDefaults(table);
     await this.colours.init();
-    
+    document.getElementById(
+      "reset"
+    ).innerHTML = `<button type="button" class="btn btn-secondary" onclick="garage.reset()">Reset All</button>`;
   },
   makePropGetSet(type) {
     const min = document.getElementById(`input${type}Min`);
@@ -87,6 +89,34 @@ const Inputs = ({ priceInputs, yearInputs, mileageInputs }) => ({
       garage.filter();
     };
   },
+
+  adjustFilters(table) {
+    this.price.maxVal = Math.max.apply(
+      Math,
+      table.column("price:name", { search: "applied" }).data()
+    );
+    this.price.minVal = Math.min.apply(
+      Math,
+      table.column("price:name", { search: "applied" }).data()
+    );
+    this.year.maxVal = Math.max.apply(
+      Math,
+      table.column("year:name", { search: "applied" }).data()
+    );
+    this.year.minVal = Math.min.apply(
+      Math,
+      table.column("year:name", { search: "applied" }).data()
+    );
+    this.mileage.maxVal = Math.max.apply(
+      Math,
+      table.column("mileage:name", { search: "applied" }).data()
+    );
+    this.mileage.minVal = Math.min.apply(
+      Math,
+      table.column("mileage:name", { search: "applied" }).data()
+    );
+  },
+
   async setDefaults(table) {
     this.price.maxVal = Math.max.apply(Math, table.column("price:name").data());
     this.price.minVal = Math.min.apply(Math, table.column("price:name").data());
@@ -114,5 +144,7 @@ const Inputs = ({ priceInputs, yearInputs, mileageInputs }) => ({
     this.mileage.maxMax = this.mileage.maxVal;
     this.colours.list = [...new Set(table.columns("colour:name").data()[0])];
     this.colours.length = this.colours.list.length;
+    document.getElementById("make").value = "";
+    document.getElementById("model").value = "";
   },
 });

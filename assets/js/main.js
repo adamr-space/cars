@@ -4,6 +4,7 @@ $(document).ready(function () {});
 const filterCars = () => {
   garage.table.table.draw();
   garage.table.inputs.colours.disable();
+  garage.table.inputs.adjustFilters(garage.table.table)
 };
 
 const outCars = (cars) => {
@@ -12,12 +13,14 @@ const outCars = (cars) => {
 };
 
 const resetFilters = () => {
+  garage.table.inputs.setDefaults(garage.table.table)
   garage.table.inputs.colours.reset();
+  garage.filter()
 };
 
 const init = async () => {
   //this is called first once to initialize run time state
-  cars = carFactory(15000); //assign n random cars to global cars variable
+  cars = carFactory(50000); //assign n random cars to global cars variable
   garage = {}; //assign empty object global garage variable
   garage.cars = [...cars]; //assign new array from global cars to garage property
   garage.render = outCars; //assign outCars function to property
