@@ -11,16 +11,26 @@ const Dt = (id) => ({
   },
   async init() {
     return $("#" + this.id).DataTable({
+      language: {
+        info: "Showing _START_ to _END_ of _TOTAL_ cars",
+        infoEmpty: "Showing 0 to 0 of 0 cars",
+        infoFiltered: "(filtered from _MAX_ total cars)",
+        lengthMenu: "Show _MENU_ cars",
+        loadingRecords: "Loading cars...",
+        processing: "Processing cars...",
+        search: "Search cars:",
+        zeroRecords: "No matching cars found",
+      },
       dom:
         "<'row'<'#" +
         this.inputs.priceInputs +
-        ".col-sm-12 col-md'><'#" +
+        ".col-sm col-md'><'#" +
         this.inputs.yearInputs +
-        ".col-sm-12 col-md'><'#" +
+        ".col-sm col-md'><'#" +
         this.inputs.mileageInputs +
-        ".col-sm-12 col-md'><'col-sm-12 col-md'f>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        ".col-sm col-md'><'#search.col-sm col-md'f>>" +
+        "<'row'<'col-sm'tr>>" +
+        "<'row'<'col-sm col-md-5'i><'col-sm col-md-7'p>>",
       data: garage.cars,
       columns: [
         { data: "make", name: "make", title: "Make" },
@@ -29,13 +39,13 @@ const Dt = (id) => ({
         {
           data: "colour",
           name: "colour",
-          render: function (data) {
-            return `
-<div class="row">
-    <div class="col-sm clrTxt">${coloursData[data]}</div>
-    <div class="col-sm clrSample" style="color:${coloursData[data].toLowerCase()}">◉</div>
-</div>`;
-          },
+          render: (data) => 
+`<div class="row">
+    <div class="col clrTxt">${coloursData[data]}</div>
+    <div class="col clrSample" style="color:${coloursData[
+      data
+    ].toLowerCase()}">◉</div>
+</div>`,
           title: "Colour",
         },
         {
@@ -52,8 +62,5 @@ const Dt = (id) => ({
         },
       ],
     });
-  },
-  render(cars) {
-    this.table.clear().rows.add(cars).draw();
   },
 });

@@ -13,6 +13,7 @@ const Inputs = ({ priceInputs, yearInputs, mileageInputs }) => ({
     this.colours = Colours(table);
     await this.setDefaults(table);
     await this.colours.init();
+    
   },
   makePropGetSet(type) {
     const min = document.getElementById(`input${type}Min`);
@@ -81,50 +82,10 @@ const Inputs = ({ priceInputs, yearInputs, mileageInputs }) => ({
     }
   },
   addEvents(input) {
-    input.reset = (e) => {
-      const input = e.target;
-    };
     input.onchange = (e) => {
       e.stopPropagation();
-      const input = e.target;
-      const { value, id } = input;
-      const obj = this.getByID(id);
-      const up = input.previousValue < value;
-      const max = id.toLowerCase().includes("max");
-      if (max) {
-        if (up) {
-          if (value > obj.maxMax) {
-            input.value = obj.maxMax;
-            return;
-          }
-        } else {
-          if (value < obj.minVal) {
-            input.value = obj.minVal;
-            return;
-          }
-        }
-      } else {
-        if (up) {
-          if (value > obj.maxVal) {
-            input.value = obj.maxVal;
-            return;
-          }
-        } else {
-          if (value < obj.minMin) {
-            input.value = obj.minMin;
-            return;
-          }
-        }
-      }
-      input.previousValue = value;
       garage.filter();
     };
-  },
-  getByID(id) {
-    id = id.toLowerCase();
-    if (id.includes("price")) return this.price;
-    if (id.includes("year")) return this.year;
-    if (id.includes("mileage")) return this.mileage;
   },
   async setDefaults(table) {
     this.price.maxVal = Math.max.apply(Math, table.column("price:name").data());
@@ -151,9 +112,7 @@ const Inputs = ({ priceInputs, yearInputs, mileageInputs }) => ({
     this.mileage.minMax = this.mileage.maxVal;
     this.mileage.maxMin = this.mileage.minVal;
     this.mileage.maxMax = this.mileage.maxVal;
-    this.colours.list = [
-      ...new Set(Array.from(table.column("colour:name").data())),
-    ];
+    this.colours.list = [...new Set(table.columns("colour:name").data()[0])];
     this.colours.length = this.colours.list.length;
   },
 });

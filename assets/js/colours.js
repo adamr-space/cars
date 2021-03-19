@@ -1,9 +1,7 @@
 const Colours = (table) => {
   return {
     div: document.getElementById("colours"),
-    timer: 0,
-    delay: 200,
-    prevent: false,
+    altPressed: false,
 
     async init() {
       this.div.classList.add("coloursFilter");
@@ -41,26 +39,19 @@ const Colours = (table) => {
         this.addEvents(input);
         this.div.append(label, input);
       }
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Alt") this.altPressed = true;
+      });
+
+      document.addEventListener("keyup", (e) => {
+        if (e.key === "Alt") this.altPressed = false;
+      });
     },
     addEvents(input) {
       input.onclick = (e) => {
         e.stopPropagation();
-        this.timer = setTimeout(() => {
-          if (!this.prevent) {
-            this.filterColour(input);
-          }
-          this.prevent = false;
-        }, this.delay);
-        console.table([
-          ["timer", "delay", "prevent"],
-          [this.timer, this.delay, this.prevent],
-        ]);
-      };
-      input.ondblclick = (e) => {
-        e.stopPropagation();
-        clearTimeout(this.timer);
-        this.prevent = true;
-        this.filterColours(input);
+        if (this.altPressed) this.filterColours(input);
+        else this.filterColour(input);
       };
     },
     addColour(colour) {
@@ -79,16 +70,9 @@ const Colours = (table) => {
       colour = parseInt(colour);
       return this.list.includes(colour);
     },
-    isColoursDefault() {
-      return this.list.length == this.length;
-    },
-    reset() {
-      this.list = [...new Set(Array.from(table.column("colour:name").data()))];
-      this.length = this.list.length;
-    },
     filterColours(sender) {
-      if (!sender.checked) {
-        // sender.checked = true;
+      if (sender.checked) {
+        sender.checked = true;
         for (const element of this.div.children) {
           if (element.type == "checkbox" && element.value != sender.value) {
             element.checked = false;
@@ -98,7 +82,7 @@ const Colours = (table) => {
         garage.filter();
       } else {
         const colours = [];
-        // sender.checked = false;
+        sender.checked = false;
         for (const element of this.div.children) {
           if (element.type == "checkbox" && element.value != sender.value) {
             element.checked = true;
@@ -109,11 +93,22 @@ const Colours = (table) => {
         garage.filter();
       }
     },
-    disable(list) {
+
+    filterColour(sender) {
+      if (sender.checked) this.addColour(sender.value);
+      else this.removeColour(sender.value);
+      garage.filter();
+    },
+    disable() {
+      const filteredColours = [
+        ...new Set(
+          table.columns("colour:name", { search: "applied" }).data()[0]
+        ),
+      ];
       for (const number of this.colours) {
         for (const element of this.div.children) {
           if (element.type == "checkbox" && element.value == number) {
-            if (!list.includes(number)) {
+            if (!filteredColours.includes(number)) {
               element.disabled = true;
             } else {
               element.disabled = false;
@@ -122,13 +117,10 @@ const Colours = (table) => {
         }
       }
     },
-
-    filterColour(sender) {
-      if (sender.checked) this.addColour(sender.value);
-      else this.removeColour(sender.value);
-      garage.filter();
-    },
     reset() {
+      this.list = [...new Set(table.columns("colour:name").data()[0])];
+      this.length = this.list.length;
+
       for (const element of this.div.children) {
         if (element.type == "checkbox") {
           element.checked = true;

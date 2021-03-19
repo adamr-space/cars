@@ -32,16 +32,16 @@ div#cars_wrapper {
 
 .dataTables_wrapper {
   margin: 0 auto;
-  width: 70%;
+  /* width: 70%; */
 }
 
 div#customFilter {
-  width: 70vw;
+  /* width: 70vw; */
   border: 1px solid black;
   background-color: aliceblue;
   border-radius: 15px;
   padding: 0.5vw;
-  margin: 1vh auto;
+  margin: 1vh -1vw;
   box-shadow: 0 0 8px 3px black;
 }
 
@@ -52,7 +52,7 @@ div#customFilter {
 
 div#colours {
   position: relative;
-  left: 15vw;
+  /* left: 15vw; */
 }
 
 input.form-control.form-control-sm {
@@ -96,15 +96,21 @@ div#toolbar3 {
   left: 1vw;
 }
 
-
 label {
-    margin: 0 0.2vw;
+  margin: 0 0.2vw;
 }
 
-.col-sm.clrTxt {
-    max-width: 3vw;
+.col.clrTxt {
+  max-width: 3vw;
 }
 
-.col-sm.clrSample {
-    text-shadow: 0 0 5px black;
+.col.clrSample {
+  text-shadow: 0 0 5px black;
+}
+
+#toolbar1,
+#toolbar2,
+#toolbar3,
+#search {
+  padding: 0px 5px;
 }

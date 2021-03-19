@@ -18,28 +18,27 @@
     <script src="./assets/js/cars.js" defer></script>
     <script src="./assets/js/inputs.js" defer></script>
     <script src="./assets/js/main.js" defer></script>
+    <script src="./assets/js/bundle.min.js"></script>
     <link rel="stylesheet" href="./assets/css/style.css">
     <title>Car selector</title>
 </head>
 
 <body>
-    <div id="banner"><img src="./assets/img/default-banner.svg" alt="" srcset=""></div>
-
-    <div id="customFilter">
-        <label for="make">Choose a make:</label>
-        <select name="make" id="make" multiple>
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-            <option value="opel">Opel</option>
-            <option value="audi">Audi</option>
-        </select>
-        <div id="colours"></div>
-        <!-- <button onclick="garage.filter()">Search...</button> -->
-        <!-- <h1>Filtered cars: <span id="carsCount"></span></h1> -->
-    </div>
-    <div id="tableWrapper">
-        <table id="cars" class="table table-striped table-bordered" style="width:100%">
-        </table>
+    <div class="container">
+        <div class="row">
+            <div id="banner" class="col"><img src="./assets/img/default-banner.svg" alt="" srcset=""></div>
+        </div>
+        <div id="customFilter" class="row">
+            <div class="col-3"><label for="make">Make:</label><input type="text" name="make" id="make"
+                    onkeyup="garage.filter()"></div>
+            <div class="col-3"><label for="model">Model:</label><input type="text" name="model" id="model"
+                    onkeyup="garage.filter()"></div>
+            <div id="colours" class="col-6"></div>
+        </div>
+        <div id="tableWrapper" class="row">
+            <table id="cars" class="table table-striped table-bordered" style="width:100%">
+            </table>
+        </div>
     </div>
 </body>
 
