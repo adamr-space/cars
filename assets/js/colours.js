@@ -20,14 +20,12 @@ const Colours = (table) => {
     makeInputs_Labels() {
       for (const colour of this.list) {
         const id = `radio${colour}`;
-        const label = makeLabel(
-          "label",
-          { htmlFor: id },
-          coloursData[colour],
-          (innerText = coloursData[colour])
-        );
+        const label = makeElement("label", {
+          htmlFor: id,
+          innerText: coloursData[colour],
+        });
 
-        const input = makeInput("input", {
+        const input = makeElement("input", {
           type: "checkbox",
           id: id,
           name: id,

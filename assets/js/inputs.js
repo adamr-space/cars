@@ -4,22 +4,34 @@ const Inputs = ({ priceInputs, yearInputs, mileageInputs }) => ({
   mileageInputs,
 
   async init(table) {
-    this.makeInputs_Labels("Price", 500, "£:");
-    this.makeInputs_Labels("Year", 1, "Yr:");
-    this.makeInputs_Labels("Mileage", 1, "mi:");
+    this.table = table;
+    const args = {
+      min: 0,
+      max: 0,
+      step: 1,
+      setStep(step) {
+        this.step = step;
+        return this;
+      },
+      previousValue: 0,
+      type: "number",
+    };
+    this.makeInputs_Labels(["Min", "Max"], "Year", "Yr:", args);
+    this.makeInputs_Labels(["Min", "Max"], "Mileage", "mi:", args);
+    this.makeInputs_Labels(["Min", "Max"], "Price", "£:", args.setStep(500));
     this.price = this.makePropGetSet("Price");
     this.year = this.makePropGetSet("Year");
     this.mileage = this.makePropGetSet("Mileage");
-    this.colours = Colours(table);
-    await this.setDefaults(table);
+    this.colours = Colours(this.table);
+    await this.setDefaults();
     await this.colours.init();
-    document.getElementById(
-      "reset"
-    ).innerHTML = `<button type="button" class="btn btn-secondary" onclick="garage.reset()">Reset All</button>`;
+    const resetEl = document.getElementById("reset");
+    resetEl.innerHTML += `<button type="button" class="btn-sm btn-secondary">Reset All</button>`;
+    resetEl.children[0].onclick = () => garage.reset();
   },
   makePropGetSet(type) {
-    const min = document.getElementById(`input${type}Min`);
-    const max = document.getElementById(`input${type}Max`);
+    const min = document.getElementById(`inputMin${type}`);
+    const max = document.getElementById(`inputMax${type}`);
     return {
       set minMin(val) {
         min.min = val;
@@ -61,25 +73,18 @@ const Inputs = ({ priceInputs, yearInputs, mileageInputs }) => ({
       },
     };
   },
-  makeInputs_Labels(type, step, suffix) {
-    for (const id of [`input${type}Min`, `input${type}Max`]) {
-      const label = makeLabel(
-        "label",
-        { htmlFor: id },
-        id.includes("Max") ? `Max ${suffix}` : `Min ${suffix}`
-      );
-
-      const input = makeInput("input", {
-        type: "number",
-        id: id,
-        name: id,
-        step: step,
-        previousValue: 0,
+  makeInputs_Labels(variants = [""], name = "", suffix = "", args = {}) {
+    for (const variant of variants) {
+      const id = `input${variant}${name}`;
+      args.id = id;
+      const label = makeElement("label", {
+        htmlFor: id,
+        innerHTML: `${variant} ${suffix}`,
       });
-
+      const input = makeElement("input", args);
       this.addEvents(input);
       document
-        .getElementById(this[type.toLowerCase() + "Inputs"])
+        .getElementById(this[name.toLowerCase() + "Inputs"])
         .append(label, input);
     }
   },
@@ -90,61 +95,29 @@ const Inputs = ({ priceInputs, yearInputs, mileageInputs }) => ({
     };
   },
 
-  adjustFilters(table) {
-    this.price.maxVal = Math.max.apply(
-      Math,
-      table.column("price:name", { search: "applied" }).data()
-    );
-    this.price.minVal = Math.min.apply(
-      Math,
-      table.column("price:name", { search: "applied" }).data()
-    );
-    this.year.maxVal = Math.max.apply(
-      Math,
-      table.column("year:name", { search: "applied" }).data()
-    );
-    this.year.minVal = Math.min.apply(
-      Math,
-      table.column("year:name", { search: "applied" }).data()
-    );
-    this.mileage.maxVal = Math.max.apply(
-      Math,
-      table.column("mileage:name", { search: "applied" }).data()
-    );
-    this.mileage.minVal = Math.min.apply(
-      Math,
-      table.column("mileage:name", { search: "applied" }).data()
-    );
+  adjustFilters() {
+    const filter = { search: "applied" };
+    for (const element of ["price", "year", "mileage"]) {
+      const data = this.table.columns(`${element}:name`, filter).data()[0];
+      this[element].maxVal = Math.max.apply(Math, data);
+      this[element].minVal = Math.min.apply(Math, data);
+    }
   },
 
-  async setDefaults(table) {
-    this.price.maxVal = Math.max.apply(Math, table.column("price:name").data());
-    this.price.minVal = Math.min.apply(Math, table.column("price:name").data());
-    this.year.maxVal = Math.max.apply(Math, table.column("year:name").data());
-    this.year.minVal = Math.min.apply(Math, table.column("year:name").data());
-    this.mileage.maxVal = Math.max.apply(
-      Math,
-      table.column("mileage:name").data()
-    );
-    this.mileage.minVal = Math.min.apply(
-      Math,
-      table.column("mileage:name").data()
-    );
-    this.price.minMin = this.price.minVal;
-    this.price.minMax = this.price.maxVal;
-    this.price.maxMin = this.price.minVal;
-    this.price.maxMax = this.price.maxVal;
-    this.year.minMin = this.year.minVal;
-    this.year.minMax = this.year.maxVal;
-    this.year.maxMin = this.year.minVal;
-    this.year.maxMax = this.year.maxVal;
-    this.mileage.minMin = this.mileage.minVal;
-    this.mileage.minMax = this.mileage.maxVal;
-    this.mileage.maxMin = this.mileage.minVal;
-    this.mileage.maxMax = this.mileage.maxVal;
-    this.colours.list = [...new Set(table.columns("colour:name").data()[0])];
+  async setDefaults() {
+    for (const element of ["price", "year", "mileage"]) {
+      const data = this.table.columns(`${element}:name`).data()[0];
+      this[element].maxVal = Math.max.apply(Math, data);
+      this[element].minVal = Math.min.apply(Math, data);
+      this[element].minMin = this[element].maxMin = this[element].minVal;
+      this[element].minMax = this[element].maxMax = this[element].maxVal;
+    }
+    this.colours.list = [
+      ...new Set(this.table.columns("colour:name").data()[0]),
+    ];
     this.colours.length = this.colours.list.length;
     document.getElementById("make").value = "";
     document.getElementById("model").value = "";
+    this.table.search("");
   },
 });

@@ -4,7 +4,7 @@ $(document).ready(function () {});
 const filterCars = () => {
   garage.table.table.draw();
   garage.table.inputs.colours.disable();
-  garage.table.inputs.adjustFilters(garage.table.table)
+  garage.table.inputs.adjustFilters()
 };
 
 const outCars = (cars) => {
@@ -13,7 +13,7 @@ const outCars = (cars) => {
 };
 
 const resetFilters = () => {
-  garage.table.inputs.setDefaults(garage.table.table)
+  garage.table.inputs.setDefaults()
   garage.table.inputs.colours.reset();
   garage.filter()
 };
