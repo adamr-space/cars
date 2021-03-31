@@ -5,11 +5,12 @@ const Dt = (id) => ({
     yearInputs: "toolbar2",
     mileageInputs: "toolbar3",
   }),
-  async make() {
-    this.table = await this.init();
-    await this.inputs.init(this.table);
+  make() {
+    this.table = this.init();
+    this.inputs.init(this.table); //initialise inputs and add them to table
+    createFilterEvents(); //create filter events for inputs
   },
-  async init() {
+  init() {
     return $("#" + this.id).DataTable({
       dom:
         "<'row'<'#" +

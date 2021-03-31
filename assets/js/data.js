@@ -396,18 +396,10 @@ const carsData = [
   { make: "Volvo", model: "V70/XC70", fromYr: 1996, toYr: 2016 },
 ];
 
-const coloursData = [
-  "White",
-  "Silver",
-  "Black",
-  "Grey",
-  "Blue",
-  "Red",
-  "Brown",
-  "Green",
-];
+const coloursData = ["White", "Silver", "Black", "Grey", "Blue", "Red", "Brown", "Green"].sort();
 
 const tableSettings = {
+  pageLength: 15,
   columns: [
     { data: "make", name: "make", title: "Make" },
     { data: "model", name: "model", title: "Model" },

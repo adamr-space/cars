@@ -105,7 +105,8 @@ label {
 }
 
 .col.clrTxt {
-  max-width: 3vw;
+  max-width: 5vw;
+  min-width: 5vw;
 }
 
 #toolbar1,
@@ -175,9 +176,6 @@ table.table.table-striped.table-bordered.dataTable.no-footer {
     margin-top: 0 !important;
 }
 
-
-div#cars_paginate {}
-
 .dataTables_scroll {
     padding: 7px;
     border: 1px black solid;
@@ -210,10 +208,11 @@ input#inputMinYear {
 input#inputMaxYear {
     max-width: 3vw;
 }
-
-ul.pagination {
-}
-
 .pagination>li {
     box-shadow: 4px 4px 6px 2px black;
+}
+
+.col.clrBlack {
+    max-width: 1vw;
+    min-width: 1vw;
 }

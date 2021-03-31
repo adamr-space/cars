@@ -3,7 +3,7 @@ const Inputs = ({ priceInputs, yearInputs, mileageInputs }) => ({
   yearInputs,
   mileageInputs,
 
-  async init(table) {
+  init(table) {
     this.table = table;
     const args = {
       min: 0,
@@ -16,15 +16,13 @@ const Inputs = ({ priceInputs, yearInputs, mileageInputs }) => ({
       previousValue: 0,
       type: "number",
     };
-    this.makeInputs_Labels(["Min", "Max"], "Year", "Yr:", args);
-    this.makeInputs_Labels(["Min", "Max"], "Mileage", "mi:", args);
-    this.makeInputs_Labels(["Min", "Max"], "Price", "£:", args.setStep(500));
-    this.price = this.makePropGetSet("Price");
-    this.year = this.makePropGetSet("Year");
-    this.mileage = this.makePropGetSet("Mileage");
+    const variants = ["Min", "Max"];
+    this.year = this.makeInputs_Labels(variants, "Year", "Yr:", args);
+    this.mileage = this.makeInputs_Labels(variants, "Mileage", "mi:", args);
+    this.price = this.makeInputs_Labels(variants, "Price", "£:", args.setStep(500));
     this.colours = Colours(this.table);
-    await this.setDefaults();
-    await this.colours.init();
+    this.setDefaults();
+    this.colours.init();
     const resetEl = document.getElementById("reset");
     resetEl.innerHTML += `<button type="button" class="btn-sm btn-secondary">Reset All</button>`;
     resetEl.children[0].onclick = () => garage.reset();
@@ -75,49 +73,54 @@ const Inputs = ({ priceInputs, yearInputs, mileageInputs }) => ({
   },
   makeInputs_Labels(variants = [""], name = "", suffix = "", args = {}) {
     for (const variant of variants) {
-      const id = `input${variant}${name}`;
-      args.id = id;
+      args.id = `input${variant}${name}`;
       const label = makeElement("label", {
-        htmlFor: id,
+        htmlFor: args.id,
         innerHTML: `${variant} ${suffix}`,
       });
       const input = makeElement("input", args);
       this.addEvents(input);
-      document
-        .getElementById(this[name.toLowerCase() + "Inputs"])
-        .append(label, input);
+      document.getElementById(this[name.toLowerCase() + "Inputs"]).append(label, input);
     }
+    return this.makePropGetSet(name); //create setters and getters for inputs, return created set/get object
   },
   addEvents(input) {
+    //add event onchange to element
     input.onchange = (e) => {
-      e.stopPropagation();
-      garage.filter();
+      //assign code to onchange event
+      e.stopPropagation(); //stop bubling
+      garage.filter(); //method call to filter results
     };
   },
 
   adjustFilters() {
-    const filter = { search: "applied" };
+    //setting new min/max for inputs based on filtered table data
+    const filter = { search: "applied" }; //create filter condition
     for (const element of ["price", "year", "mileage"]) {
-      const data = this.table.columns(`${element}:name`, filter).data()[0];
-      this[element].maxVal = Math.max.apply(Math, data);
-      this[element].minVal = Math.min.apply(Math, data);
+      //iterate over array of strings matching columns
+      const data = this.table.columns(`${element}:name`, filter).data()[0]; //get data for matched and filtered column
+      this[element].maxVal = Math.max.apply(Math, data); //get max value for filtered data and assign to element property
+      this[element].minVal = Math.min.apply(Math, data); //get min value for filtered data and assign to element property
     }
   },
 
-  async setDefaults() {
+  setDefaults() {
+    //set defaults for inputs
     for (const element of ["price", "year", "mileage"]) {
-      const data = this.table.columns(`${element}:name`).data()[0];
-      this[element].maxVal = Math.max.apply(Math, data);
-      this[element].minVal = Math.min.apply(Math, data);
-      this[element].minMin = this[element].maxMin = this[element].minVal;
-      this[element].minMax = this[element].maxMax = this[element].maxVal;
+      //iterate over array of strings matching columns
+      const data = this.table.columns(`${element}:name`).data()[0]; //get data for matched column
+      this[element].maxVal = Math.max.apply(Math, data); //get max value for data and assign to element property
+      this[element].minVal = Math.min.apply(Math, data); //get min value for data and assign to element property
+      this[element].minMin = this[element].maxMin = this[element].minVal; //set properites of two elements to match min value
+      this[element].minMax = this[element].maxMax = this[element].maxVal; //set properites of two elements to match max value
     }
     this.colours.list = [
+      //get sorted array of unique colours from dataset
       ...new Set(this.table.columns("colour:name").data()[0]),
-    ];
-    this.colours.length = this.colours.list.length;
-    document.getElementById("make").value = "";
-    document.getElementById("model").value = "";
-    this.table.search("");
+    ].sort();
+    // this.colours.length = this.colours.list.length;
+    document.getElementById("make").value = ""; //null make input
+    document.getElementById("model").value = ""; //null model input
+    this.table.search(""); //null table search input
   },
 });
