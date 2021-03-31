@@ -3,37 +3,6 @@
   padding: 0;
 }
 
-.car {
-  border: 1px solid black;
-  border-radius: 15px;
-  margin: 0.2vh;
-  padding: 1vh;
-  width: 35vw;
-  background-color: aliceblue;
-}
-
-.year,
-.colour,
-.price,
-.mileage {
-  display: inline;
-  padding: 0 1.5vw;
-  border-top: black solid 1px;
-  left: 1vw;
-  position: relative;
-}
-
-.make {
-  font-size: 2vw;
-  font-weight: bold;
-}
-
-.model {
-  font-size: 1vw;
-  font-weight: 600;
-  font-style: italic;
-}
-
 div#banner {
   background-color: #3e6866;
 }
@@ -50,12 +19,12 @@ body {
 }
 
 table#cars {
-  border: 3px solid black;
+  /* border: 3px solid black; */
   box-shadow: 0 0 12px 2px black;
 }
 
 div#cars_wrapper {
-  background-color: #f0f8ffd4;
+  background-color: #f3f3f385;
   padding: 1vw;
   border-radius: 15px;
   box-shadow: 0 0 6px 5px black;
@@ -63,16 +32,16 @@ div#cars_wrapper {
 
 .dataTables_wrapper {
   margin: 0 auto;
-  width: 70%;
+  /* width: 70%; */
 }
 
 div#customFilter {
-  width: 70vw;
+  /* width: 70vw; */
   border: 1px solid black;
   background-color: aliceblue;
   border-radius: 15px;
   padding: 0.5vw;
-  margin: 1vh auto;
+  margin: 1vh -1vw;
   box-shadow: 0 0 8px 3px black;
 }
 
@@ -83,36 +52,24 @@ div#customFilter {
 
 div#colours {
   position: relative;
-  left: 15vw;
+  /* left: 15vw; */
 }
 
 input.form-control.form-control-sm {
   margin-bottom: 1vh;
 }
 
-#customFilter > button {
-  margin-left: 0.5vw;
-  padding: 0.1vw;
-  border-radius: 10px;
-}
-
-span.clrSample {
-  text-shadow: 0 0 10px black;
-  /* margin-left: 0.5vw; */
-}
-
-.clrsFlt > label {
-  margin: 0.3vw;
-}
-
 div#tableWrapper {
-  height: 100vh;
   position: relative;
+  background-image: url(./img/polonez-pattern.png);
   display: block;
+  margin-bottom: 10vh;
 }
 
 tr[role] {
   background-color: aliceblue;
+  border: 1px solid black;
+  border-collapse: unset;
 }
 
 tr {
@@ -120,8 +77,9 @@ tr {
 }
 
 input[type="number"] {
-  max-width: 3.7vw;
+  max-width: 3.9vw;
   text-align: center;
+  margin: 0 0 0 5px;
 }
 
 input.form-control.form-control-sm {
@@ -142,7 +100,119 @@ div#toolbar3 {
   left: 1vw;
 }
 
-
 label {
-    margin: 0 0.2vw;
+  margin: -1vh 0.1vw;
+}
+
+.col.clrTxt {
+  max-width: 5vw;
+  min-width: 5vw;
+}
+
+#toolbar1,
+#toolbar2,
+#toolbar3,
+#search {
+  padding: 5px 0px;
+  box-shadow: 0px 0px 3px 2px black;
+  white-space: nowrap;
+  border-radius: 10px;
+}
+
+#cars > tbody > tr > td > div > div:nth-child(2){
+  text-shadow: 0 0 5px black;
+}
+
+.col.clrSilver {
+    color: silver;
+}
+
+.col.clrBlack {
+    color: black;
+}
+
+.col.clrBrown {
+    color: brown;
+}
+
+.col.clrRed {
+    color: red;
+}
+
+.col.clrBlue {
+    color: blue;
+}
+
+.col.clrWhite {
+    color: white;
+}
+
+.col.clrGreen {
+    color: green;
+}
+
+.col.clrGrey {
+    color: grey;
+}
+
+button.btn-sm.btn-secondary {
+    margin-top: 0.5vh;
+    box-shadow: 4px 4px 5px 1px black;
+}
+
+
+.dataTables_scrollHead {
+    margin-bottom: 1vh;
+    box-shadow: 2px 2px 5px 3px black;
+    border-radius: 5px;
+}
+
+.dataTables_scrollBody {
+    box-shadow: 2px 2px 5px 3px black;
+    border-radius: 5px;
+}
+
+table.table.table-striped.table-bordered.dataTable.no-footer {
+    margin-top: 0 !important;
+}
+
+.dataTables_scroll {
+    padding: 7px;
+    border: 1px black solid;
+    border-radius: 9px;
+    box-shadow: 0 0 5px 2px black;
+    margin-bottom: 1vh;
+}
+
+div#search {margin: 0 0px 10px 1.7vw;max-width: 15vw;}
+
+div#toolbar1 {
+    margin: 0px 8px 10px 0.5vw;
+    max-width: 14vw;
+}
+
+div#toolbar2 {
+    margin: 0 -10px 10px 0px;
+    max-width: 12.6vw;
+}
+
+div#toolbar3 {
+    margin: 0px 0px 10px 0px;
+    max-width: 15vw;
+}
+
+input#inputMinYear {
+    max-width: 3vw;
+}
+
+input#inputMaxYear {
+    max-width: 3vw;
+}
+.pagination>li {
+    box-shadow: 4px 4px 6px 2px black;
+}
+
+.col.clrBlack {
+    max-width: 1vw;
+    min-width: 1vw;
 }

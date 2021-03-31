@@ -396,13 +396,49 @@ const carsData = [
   { make: "Volvo", model: "V70/XC70", fromYr: 1996, toYr: 2016 },
 ];
 
-const coloursData = [
-  "White",
-  "Silver",
-  "Black",
-  "Grey",
-  "Blue",
-  "Red",
-  "Brown",
-  "Green",
-];
+const coloursData = ["White", "Silver", "Black", "Grey", "Blue", "Red", "Brown", "Green"].sort();
+
+const tableSettings = {
+  pageLength: 15,
+  columns: [
+    { data: "make", name: "make", title: "Make" },
+    { data: "model", name: "model", title: "Model" },
+    { data: "year", name: "year", title: "Year" },
+    {
+      data: "colour",
+      name: "colour",
+      render: (data) =>
+        `<div class="row">
+        <div class="col clrTxt">${coloursData[data]}</div>
+        <div class="col clr${coloursData[data]}">◉</div>
+        </div>`,
+      title: "Colour",
+    },
+    {
+      data: "mileage",
+      name: "mileage",
+      title: "Mileage",
+      render: $.fn.dataTable.render.number(",", ".", 0, "", " mi"),
+    },
+    {
+      data: "price",
+      name: "price",
+      render: $.fn.dataTable.render.number(",", ".", 0, "£"),
+      title: "Price",
+    },
+  ],
+  language: {
+    info: "Showing _START_ to _END_ of _TOTAL_ cars",
+    infoEmpty: "Showing 0 to 0 of 0 cars",
+    infoFiltered: "(filtered from _MAX_ total cars)",
+    lengthMenu: "Show _MENU_ cars",
+    loadingRecords: "Loading cars...",
+    processing: "Processing cars...",
+    search: "Search cars:",
+    zeroRecords: "No matching cars found",
+  },
+  responsive: true,
+  deferRender: true,
+  scrollY: "100%",
+  scrollCollapse: true,
+};
